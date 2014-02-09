@@ -13,6 +13,11 @@ class AuditModel(models.Model):
     class Meta:
         abstract = True
 
+STATE_MEMBER_CHOICES = (
+    ('A', 'Active'),
+    ('I', 'Innactive'),
+)
+
 
 STATE_TASK_CHOICES = (
     ('todo', 'To Do'), # Pendientes
@@ -22,10 +27,42 @@ STATE_TASK_CHOICES = (
 )
 
 
+class Team(AuditModel):
+    """Model Team"""
+    boss = models.ForeignKey(User)
+    members = models.ManyToManyKey(User, through='Member')
+    name = models.CharField(max_length=100)
+    max_users = models.IntegerField(default=6)
+
+    class Meta:
+        ordering = ('modified',)
+        verbose_name = 'Project'
+        verbose_name_plural = 'Projects'
+
+    def __unicode__(self):
+        return u"%s" % (self.name,)
+
+class Member(AuditModel):
+    team = models.ForeignKey(Team)
+    user = models.ForeignKey(User)
+    state = models.CharField(max_length=10, choices=STATE_MEMBER_CHOICES)
+    can_create_project = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ('modified',)
+        verbose_name = 'Member'
+        verbose_name_plural = 'Members'
+
+    def __unicode__(self):
+        return u"%s" % (self.state,)
+
 class Project(AuditModel):
     """Model Project"""
-    name = models.CharField(max_length=100)
     owner = models.ForeignKey(User)
+    team = models.ForeignKey(Team)
+    users = models.ManyToManyKey(User)
+    name = models.CharField(max_length=100)
+    resumen = models.CharField(max_length=100)
 
     class Meta:
         ordering = ('modified',)
@@ -55,10 +92,12 @@ class Story(AuditModel):
 class Task(AuditModel):
     """Model Task"""
     story = models.ForeignKey(Story)
+    owner = models.ForeignKey(User)
     number = models.CharField(max_length=4)
+    duration = models.IntegerField()
+    real_duration = models.IntegerField()
     description = models.TextField()
     state = models.CharField(max_length=10, choices=STATE_TASK_CHOICES)
-    owner = models.ForeignKey(User)
 
     class Meta:
         # db_table = 'music_album'
@@ -68,3 +107,34 @@ class Task(AuditModel):
 
     def __unicode__(self):
         return u"%s" % (self.description,)
+
+class Comment(AuditModel):
+    """Model Comment"""
+    task = models.ForeignKey(Task)
+    user = models.ForeignKey(User)
+    content = models.TextField()
+
+    class Meta:
+        # db_table = 'music_album'
+        ordering = ('created',)
+        verbose_name = 'Comment'
+        verbose_name_plural = 'Comments'
+
+    def __unicode__(self):
+        return u"%s" % (self.content,)
+
+
+class Material(AuditModel):
+    """Model Task"""
+    task = models.ForeignKey(Task)
+    user = models.ForeignKey(User)
+    file = models.FileField(upload_to='material')
+
+    class Meta:
+        # db_table = 'music_album'
+        ordering = ('created',)
+        verbose_name = 'Material'
+        verbose_name_plural = 'Materials'
+
+    def __unicode__(self):
+        return u"%s" % (self.file,)
