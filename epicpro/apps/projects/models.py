@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class AuditModel(models.Model):
     """
     An Abstract base class model that provides self-updating "create" , "delete" and "modified" fields.
@@ -12,6 +13,7 @@ class AuditModel(models.Model):
 
     class Meta:
         abstract = True
+
 
 STATE_MEMBER_CHOICES = (
     ('A', 'Active'),
@@ -29,18 +31,19 @@ STATE_TASK_CHOICES = (
 
 class Team(AuditModel):
     """Model Team"""
-    boss = models.ForeignKey(User)
-    members = models.ManyToManyKey(User, through='Member')
+    boss = models.ForeignKey(User, related_name='boss')
+    members = models.ManyToManyField(User, through='Member')
     name = models.CharField(max_length=100)
     max_users = models.IntegerField(default=6)
 
     class Meta:
         ordering = ('modified',)
-        verbose_name = 'Project'
-        verbose_name_plural = 'Projects'
+        verbose_name = 'Team'
+        verbose_name_plural = 'Teams'
 
     def __unicode__(self):
         return u"%s" % (self.name,)
+
 
 class Member(AuditModel):
     team = models.ForeignKey(Team)
@@ -56,13 +59,14 @@ class Member(AuditModel):
     def __unicode__(self):
         return u"%s" % (self.state,)
 
+
 class Project(AuditModel):
     """Model Project"""
-    owner = models.ForeignKey(User)
-    team = models.ForeignKey(Team)
-    users = models.ManyToManyKey(User)
+    owner = models.ForeignKey(User, related_name='owner')
+    team = models.ForeignKey(Team, blank=True, null=True)
+    users = models.ManyToManyField(User)
     name = models.CharField(max_length=100)
-    resumen = models.CharField(max_length=100)
+    resumen = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         ordering = ('modified',)
@@ -94,8 +98,8 @@ class Task(AuditModel):
     story = models.ForeignKey(Story)
     owner = models.ForeignKey(User)
     number = models.CharField(max_length=4)
-    duration = models.IntegerField()
-    real_duration = models.IntegerField()
+    duration = models.IntegerField(default=0)
+    real_duration = models.IntegerField(default=0)
     description = models.TextField()
     state = models.CharField(max_length=10, choices=STATE_TASK_CHOICES)
 
@@ -108,11 +112,12 @@ class Task(AuditModel):
     def __unicode__(self):
         return u"%s" % (self.description,)
 
+
 class Comment(AuditModel):
     """Model Comment"""
     task = models.ForeignKey(Task)
     user = models.ForeignKey(User)
-    content = models.TextField()
+    text = models.TextField()
 
     class Meta:
         # db_table = 'music_album'
@@ -121,13 +126,14 @@ class Comment(AuditModel):
         verbose_name_plural = 'Comments'
 
     def __unicode__(self):
-        return u"%s" % (self.content,)
+        return u"%s" % (self.text,)
 
 
 class Material(AuditModel):
     """Model Task"""
     task = models.ForeignKey(Task)
     user = models.ForeignKey(User)
+    text = models.TextField()
     file = models.FileField(upload_to='material')
 
     class Meta:
