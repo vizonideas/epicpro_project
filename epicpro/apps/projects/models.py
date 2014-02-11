@@ -31,7 +31,7 @@ STATE_TASK_CHOICES = (
 
 UNIT_TASK_CHOICES = (
     ('h', 'hour(s)'),
-    ('d', 'day(s)'),
+    #('d', 'day(s)'),
 )
 
 
