@@ -29,12 +29,20 @@ STATE_TASK_CHOICES = (
 )
 
 
+UNIT_TASK_CHOICES = (
+    ('h', 'hour(s)'),
+    ('d', 'day(s)'),
+)
+
+
 class Team(AuditModel):
     """Model Team"""
     boss = models.ForeignKey(User, related_name='boss')
     members = models.ManyToManyField(User, through='Member')
     name = models.CharField(max_length=100)
+    resumen = models.CharField(max_length=100, blank=True, null=True)
     max_users = models.IntegerField(default=6)
+    work_hour = models.IntegerField(default=8)
 
     class Meta:
         ordering = ('modified',)
@@ -100,6 +108,7 @@ class Task(AuditModel):
     number = models.CharField(max_length=4)
     duration = models.IntegerField(default=0)
     real_duration = models.IntegerField(default=0)
+    unit = models.CharField(max_length=1,default='h', choices=UNIT_TASK_CHOICES)
     description = models.TextField()
     state = models.CharField(max_length=10, choices=STATE_TASK_CHOICES)
 
@@ -117,7 +126,7 @@ class Comment(AuditModel):
     """Model Comment"""
     task = models.ForeignKey(Task)
     user = models.ForeignKey(User)
-    text = models.TextField()
+    text = models.TextField(blank=True, null=True)
 
     class Meta:
         # db_table = 'music_album'
@@ -133,7 +142,7 @@ class Material(AuditModel):
     """Model Task"""
     task = models.ForeignKey(Task)
     user = models.ForeignKey(User)
-    text = models.TextField()
+    text = models.TextField(blank=True, null=True)
     file = models.FileField(upload_to='material')
 
     class Meta:
