@@ -29,7 +29,7 @@ class LoginView(TemplateView):
     template_name = 'projects/login.html'
 
 
-class HomeRegisterView(LoginRequiredMixin,FormView):
+class HomeRegisterView(FormView):
     form_class = RegisterUserTeamForm
     template_name = "projects/index.html"
     success_url = reverse_lazy('login_view')
