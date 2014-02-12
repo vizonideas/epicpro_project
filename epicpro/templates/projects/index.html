@@ -2,7 +2,46 @@
 
 {% block content %}
 
+<div class="container">
 
+    {% include "projects/navbar.html" %}
+
+    <div class="jumbotron text-center">
+      
+        <h1>Epicpro &alpha;</h1>
+        <p>Empieza ya a administrar tu equipo y proyectos. Registrate ahora:</p>
+        <p>
+            <form action="{% url "home" %}" method="POST">{% csrf_token %}
+
+                {{ form.errors }}
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <div class="form-group">
+                            <input id="id_team" name="team" type="text" class="form-control" placeholder="Team name" />
+                        </div>
+                        <div class="form-group">
+                            <input id="id_username" name="username" type="text" class="form-control" placeholder="Email" />
+                        </div>
+                        <div class="form-group">
+                            <input id="id_password1" name="password1" type="password" class="form-control" placeholder="Password" />
+                        </div>
+                        <div class="form-group">
+                            <input id="id_password2" name="password2" type="password" class="form-control" placeholder="Confirm your password" />
+                        </div>
+                        <input type="submit"  class="btn btn-primary btn-block" value="login" />
+                        <input type="hidden" name="next" value="{{ next }}" />
+                    </div>
+                </div>
+            </form>
+            
+        </p>
+
+    </div>
+
+    <p class="text-center">Epicpro 2014 - <a href="http://vizonideas.com">vizonideas</a></p>
+
+</div>
 
 {% endblock %}
 

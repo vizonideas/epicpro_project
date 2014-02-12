@@ -1,5 +1,6 @@
 # Django settings for epicpro project.
 import os
+from django.core.urlresolvers import reverse_lazy
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
@@ -163,3 +164,8 @@ LOGGING = {
         },
     }
 }
+
+
+LOGIN_URL = reverse_lazy('login')
+LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
+LOGIN_LOGOUT = reverse_lazy('logout')

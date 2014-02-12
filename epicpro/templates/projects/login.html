@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    {% include "projects/navbar.html" %}
+
+    <div class="jumbotron text-center">
+      
+        <h1>Epicpro &alpha;</h1>
+        {% if user.is_authenticated %}
+            <p>Bienvenido {{ user.username|capfirst }} - <a href="{% url "logout" %}">Logout</a></p>
+        {% else %}
+        <p>Ingresa su usuario y password.</p>
+        <p>
+            <form action="{% url "login" %}" method="POST">{% csrf_token %}
+                {{ form.errors }}
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <div class="form-group">
+                            <input type="text" name="username" class="form-control" placeholder="username" />
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="password" class="form-control" placeholder="Password" />
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Send</button>
+                        <input type="hidden" name="next" value="{{ next }}" />
+                    </div>
+                </div>
+            </form>
+        </p>
+        {% endif %}
+
+    </div>
+
+    <p class="text-center">Epicpro 2014 - <a href="http://vizonideas.com">vizonideas</a></p>
+
+</div>
+
+{% endblock %}
