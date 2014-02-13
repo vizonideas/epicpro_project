@@ -1,5 +1,14 @@
 from django.conf.urls import patterns, include, url
-from .views import HomeRegisterView,LoginView,DashboardView,TeamHomeView,ProjectsHomeView,ResumeHomeView,TeamUpdateView
+from .views import (
+	HomeRegisterView,
+	LoginView,
+	DashboardView,
+	TeamHomeView,
+	ProjectsHomeView,
+	ResumeHomeView,
+	TeamUpdateView,
+	ProfileHomeView,
+)
 
 urlpatterns = patterns('',
 
@@ -8,6 +17,7 @@ urlpatterns = patterns('',
     url( r'^team/$', TeamHomeView.as_view(), name='team' ),
     url( r'^projects/$', ProjectsHomeView.as_view(), name='projects' ),
     url( r'^resume/$', ResumeHomeView.as_view(), name='resume' ),
+    url( r'^profile/$', ProfileHomeView.as_view(), name='profile' ),
 
     url( r'^team/(?P<pk>\d+)$/', TeamUpdateView.as_view(), name='update_team' ),
 

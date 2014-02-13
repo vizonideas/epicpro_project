@@ -59,14 +59,6 @@ class TeamHomeView(LoginRequiredMixin,TemplateView):
     template_name = 'projects/dashboard/team.html'
 
 
-class ProjectsHomeView(LoginRequiredMixin,TemplateView):
-    template_name = 'projects/dashboard/projects.html'
-
-
-class ResumeHomeView(LoginRequiredMixin,TemplateView):
-    template_name = 'projects/dashboard/resume.html'
-
-
 class TeamUpdateView(LoginRequiredMixin,UpdateView):
     form_class = TeamForm
     model = Team
@@ -92,3 +84,12 @@ class MemberCreateView(LoginRequiredMixin,CreateView):
     template_name = 'projects/dashboard/team_memberform.html'
 
 
+class ProjectsHomeView(LoginRequiredMixin,TemplateView):
+    template_name = 'projects/dashboard/projects.html'
+
+
+class ResumeHomeView(LoginRequiredMixin,TemplateView):
+    template_name = 'projects/dashboard/resume.html'
+
+class ProfileHomeView(LoginRequiredMixin,TemplateView):
+    template_name = 'projects/dashboard/profile.html'
