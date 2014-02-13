@@ -1,6 +1,7 @@
 #encoding:utf-8
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 
 class AuditModel(models.Model):
@@ -40,9 +41,13 @@ class Team(AuditModel):
     boss = models.ForeignKey(User, related_name='boss')
     members = models.ManyToManyField(User, through='Member')
     name = models.CharField(max_length=100)
+    slut = models.CharField(max_length=100)
     resumen = models.CharField(max_length=100, blank=True, null=True)
     max_users = models.IntegerField(default=6)
     work_hour = models.IntegerField(default=8)
+
+    def get_absolute_url(self):
+        return reverse("team", kwargs={"pk": self.pk})
 
     class Meta:
         ordering = ('modified',)

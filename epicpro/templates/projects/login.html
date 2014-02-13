@@ -10,7 +10,7 @@
       
         <h1>Epicpro &alpha;</h1>
         {% if user.is_authenticated %}
-            <p>Bienvenido {{ user.username|capfirst }} - <a href="{% url "logout" %}">Logout</a></p>
+            <p>Bienvenido {{ user.username }} - <a href="{% url "logout" %}">Logout</a></p>
         {% else %}
         <p>Ingresa su usuario y password.</p>
         <p>

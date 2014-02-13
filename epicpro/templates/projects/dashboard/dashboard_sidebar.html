@@ -1,0 +1,10 @@
+<div class="panel panel-default">
+    <div class="panel-heading">Epicpro &alpha; -  menu</div>
+    <div class="panel-body">
+        <ul class="nav nav-pills nav-stacked">
+			{% for item in menu %}
+            	<li {% if item.active %}class="active"{% endif%}><a href="{{ item.url}}">{{ item.name }}</a></li>
+			{% endfor %}
+        </ul>
+    </div>
+</div>
